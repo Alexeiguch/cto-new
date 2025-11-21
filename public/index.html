@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Content Composer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header>
+        <h1>Content Generation Studio</h1>
+        <p>Create social copy and video scripts powered by deterministic prompt builders.</p>
+      </header>
+
+      <section class="panel">
+        <h2>Composer</h2>
+        <div class="form-grid">
+          <label>
+            Property
+            <select id="propertySelect"></select>
+          </label>
+
+          <label>
+            Tone
+            <select id="toneSelect"></select>
+          </label>
+
+          <label>
+            Length
+            <select id="lengthSelect"></select>
+          </label>
+
+          <label>
+            Custom Instructions
+            <textarea id="instructionsInput" rows="2" placeholder="Highlight waterfront views, mention new schools, etc."></textarea>
+          </label>
+
+          <label>
+            Audience
+            <input id="audienceInput" type="text" placeholder="Move-up families, remote workers, ..." />
+          </label>
+
+          <label>
+            Call to Action
+            <input id="ctaInput" type="text" placeholder="Schedule a private tour" />
+          </label>
+
+          <fieldset class="platforms">
+            <legend>Social Platforms</legend>
+            <div id="platformOptions"></div>
+          </fieldset>
+
+          <div class="actions">
+            <button id="socialBtn" class="primary">Generate Social Copy</button>
+            <button id="videoBtn" class="secondary">Generate Video Script</button>
+            <button id="savePlanBtn" class="ghost" disabled>Save Latest Plan</button>
+          </div>
+        </div>
+        <p class="helper" id="feedback"></p>
+      </section>
+
+      <section class="panel" id="resultsPanel">
+        <h2>Generated Draft</h2>
+        <div id="resultContainer" class="result"></div>
+      </section>
+
+      <section class="panel">
+        <div class="plans-header">
+          <h2>Saved Plans</h2>
+          <button id="refreshPlansBtn" class="secondary">Refresh</button>
+        </div>
+        <div id="plansList" class="plans"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
