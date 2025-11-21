@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Example models for real estate workflow
+// Customize these based on your specific needs
+
+model Property {
+  id        String   @id @default(cuid())
+  address   String
+  city      String
+  state     String
+  zipCode   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  documents Document[]
+
+  @@map("properties")
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  title     String
+  fileUrl   String
+  fileType  String   // pdf, image, etc
+  status    String   @default("pending") // pending, processed, failed
+  
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  analyses Analysis[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("documents")
+}
+
+model Analysis {
+  id         String   @id @default(cuid())
+  type       String   // document_type, entity_extraction, sentiment, etc
+  result     Json     // Store analysis results as JSON
+  confidence Float?   // Confidence score if applicable
+  
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("analyses")
+}
