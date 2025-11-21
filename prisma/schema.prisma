@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id          String      @id @default(cuid())
+  filename    String
+  originalUrl String?     // URL to stored original file in cloud storage
+  fileSize    Int
+  mimeType    String
+  status      DocumentStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  pages       PageAsset[]
+  
+  @@map("documents")
+}
+
+model PageAsset {
+  id         String   @id @default(cuid())
+  documentId String
+  pageNumber Int
+  text       String?
+  imageUrl   String?  // URL to extracted image in cloud storage
+  imageWidth Int?
+  imageHeight Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  
+  @@map("page_assets")
+  @@unique([documentId, pageNumber])
+}
+
+enum DocumentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
