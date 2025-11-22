@@ -1,0 +1,5 @@
+node_modules
+content.db
+.env
+.DS_Store
+coverage
